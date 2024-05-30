@@ -256,6 +256,16 @@ a = [i for i in 1:10]
 
 ### EXERCISE 1
 
+# Write a loop that counts from 1 to 100, printing each number on a separate line. But, there's a twist:
+# - For numbers that are multiples of 3, you should print "Fizz" instead.
+# - For multiples of 5, print "Buzz".
+# - For numbers that are multiples of both 3 and 5, don't print anything.
+
+##### TODO: CODE BELOW
+
+
+##### TODO: CODE ABOVE
+
 ########## BASIC DATA STRUCTURES ##########
 
 # We have previously discussed primitive types, but we can do more interesting stuff with them.
@@ -407,6 +417,18 @@ v = collect(values(data))
 
 ### EXERCISE 2
 
+# Write a piece of code that for the given dictionary, creates a separate dictionary
+# where the values in the arrays repeated. For example:
+# data["FG34A"] -> [1, 2, 3, 4] would turn into
+# new_data["FG34A"] -> [1, 2, 3, 4, 1, 2, 3, 4]
+
+# Use the dictionary below as original
+data = Dict{String, Vector{Int}}("1A3CD" => [1, 4, 2, 4], "2HD7E" => [6, 4, 3, 8, 2], "F4JK3" => [0, 4, 4, 5, 5])
+
+##### TODO: CODE BELOW
+
+##### TODO: CODE ABOVE
+
 ########## FUNCTIONS ##########
 
 # Julia is a funcional programming language. What that means is that everything is done through functions.
@@ -541,6 +563,14 @@ b = length.(a) .> 2
 a[b]
 
 ### EXERCISE 3
+
+# Write a TYPED function that takes in an Vector of Int64, and returns Nothing
+# The in-place function should square each element of the vector
+# (bonus points is you use the broadcasting operator)
+
+##### TODO: CODE BELOW
+
+##### TODO: CODE ABOVE
 
 ########## STRUCTS ##########
 

@@ -133,6 +133,12 @@ tr(A)
 det(A)
 inv(A)
 
+# If you wish to sum over the rows/columns of a Matrix, use the 'dims' keyboard
+# This also works for 'mean', 'std' etc
+
+sum(A, dims=1) # sums over rows
+mean(A, dims=2) # mean across columns
+
 # To get the transpose, use an apostrophe (A') or 'transpose':
 
 Aᵀ = A'
@@ -273,6 +279,16 @@ a = 0
     a += 1
 end
 
+### EXERCISE 1
+
+# Write a piece of code that generates a random 100x100 matrix (using 'randn'), takes the pseudo-inverse of this matrix, 
+# and adds 100 of these together into a single 10,000 x 100 matrix.
+# Incorporate ProgressBar/ProgressMeter to indicate your progress across the 100 matrices.
+
+##### TODO: CODE BELOW
+
+##### TODO: CODE ABOVE
+
 ##### BenchMarkTools.jl ##### (https://juliaci.github.io/BenchmarkTools.jl/stable/)
 
 Pkg.add("BenchmarkTools");
@@ -397,8 +413,6 @@ end
 
 data2 = JSON.parsefile("data.json")
 data2 == data
-
-### EXERCISE 1
 
 ########## PLOTTING ##########
 
@@ -574,6 +588,22 @@ l = @layout [a{0.3w} [grid(3,3)
 plot(rand(10, 11), layout=l, legend=false, seriestype=[:bar :scatter :path])
 
 ### EXERCISE 2
+
+# Create any line plot of your liking (single plot, no subplots)
+# It must meet these requirements:
+# - 4 lines
+#   - colors: green, blue, gray, red
+#   - line width: thick, thick, thin, thin
+#   - labeled (however you want)
+# - no legend box
+# - at most 3 x ticks, and at least 5 y ticks
+# - no grid lines
+# - must have axis labels and a title
+# - plot should be square in shape
+
+##### TODO: CODE BELOW
+
+##### TODO: CODE ABOVE
 
 ##### ALTERNATE PLOTS #####
 
@@ -845,4 +875,17 @@ gif(anim, fps=50)
 
 ### EXERCISE 3
 
+# Create an animation with following requirements
+# - fixed axis scales (both x and y do not resize during the animation)
+# - uses the given data and plots a line plot of these
+# - the line should extend from the left (x=0) to the right (x=300)
+# - each frame should add a single point to the line
+# - fps should be 30
+# BONUS: make the rightmost point a large red star on each frame
 
+# Data for plotting is below:
+data = cumsum(randn(300));
+
+##### TODO: CODE BELOW
+
+##### TODO: CODE ABOVE

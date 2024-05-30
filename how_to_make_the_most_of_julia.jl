@@ -59,10 +59,25 @@ function sum_multi_bad()
     return s
 end
 
+# Note how these give different answers
 sum_multi_bad()
 sum_multi_bad()
 
 ### EXERCISE 1
+
+# Provided is an array of 20 matrices of 500x500 size. Your job is to compute the trace ('tr') of
+# the pseudoinverse ('pinv') of each matrix, and store it in a sepate array. Do all of this using
+# multithreading
+
+matrices = [randn(1000, 1000) for _ in 1:20];
+
+##### TODO: CODE BELOW
+
+##### TODO: CODE ABOVE
+
+# CHECK IF YOUR ANSWER IS CORRECT:
+
+CORRECT_ANSWER = tr.(pinv.(matrices)) # might take a few seconds to run
 
 ##### Distributed.jl ##### (https://docs.julialang.org/en/v1/manual/distributed-computing/)
 
@@ -350,6 +365,15 @@ pvalue(test)
 dump(test)
 
 ### EXERCISE 2
+
+# Identify for which subjects mean of the data from experiment1 and experiment2
+# is statistically significantly different (assume unequal variance)
+
+df = CSV.read("data_.csv", DataFrame)
+
+##### TODO: CODE BELOW
+
+##### TODO: CODE ABOVE
 
 ########## INTERACTING WITH OTHER LANGUAGES ##########
 
