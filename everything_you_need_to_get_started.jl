@@ -282,7 +282,7 @@ end
 ### EXERCISE 1
 
 # Write a piece of code that generates a random 100x100 matrix (using 'randn'), takes the pseudo-inverse of this matrix, 
-# and adds 100 of these together into a single 10,000 x 100 matrix.
+# and concatenates 100 of these together into a single 10,000 x 100 matrix.
 # Incorporate ProgressBar/ProgressMeter to indicate your progress across the 100 matrices.
 
 ##### TODO: CODE BELOW
@@ -878,13 +878,13 @@ gif(anim, fps=50)
 # Create an animation with following requirements
 # - fixed axis scales (both x and y do not resize during the animation)
 # - uses the given data and plots a line plot of these
-# - the line should extend from the left (x=0) to the right (x=300)
+# - the line should extend from the left (x=0) to the right (x=120)
 # - each frame should add a single point to the line
 # - fps should be 30
 # BONUS: make the rightmost point a large red star on each frame
 
 # Data for plotting is below:
-data = cumsum(randn(300));
+data = cumsum(randn(120));
 
 ##### TODO: CODE BELOW
 

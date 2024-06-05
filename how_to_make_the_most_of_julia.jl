@@ -69,7 +69,7 @@ sum_multi_bad()
 # the pseudoinverse ('pinv') of each matrix, and store it in a sepate array. Do all of this using
 # multithreading
 
-matrices = [randn(1000, 1000) for _ in 1:20];
+matrices = [randn(500, 500) for _ in 1:20];
 
 ##### TODO: CODE BELOW
 
@@ -366,7 +366,7 @@ dump(test)
 
 ### EXERCISE 2
 
-# Identify for which subjects mean of the data from experiment1 and experiment2
+# Identify for which subjects the mean of the data from experiment1 and experiment2
 # is statistically significantly different (assume unequal variance)
 
 df = CSV.read("data_.csv", DataFrame)
