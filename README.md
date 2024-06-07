@@ -16,7 +16,7 @@ If you are using VS Code, open the files in the VS Code folder.
 
 If you are using Jupyter Notebook, open the files in the Jupyter Notebook folder.
 
-If you are using Google Colab, use the following links:
+If you are using Google Colab, use the following links (you will have to copy the file to your own Google Drive, and run in Google Colab):
 
 - Basics: https://shorturl.at/zulnt
 
