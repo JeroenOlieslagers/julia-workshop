@@ -3,7 +3,7 @@
 # with using Julia for your own projects.
 
 using Pkg
-Pkg.add(["ProgressBars", "ProgressMeter", "BenchMarkTools", "FileIO", "JLD2", "NPZ", "CSV", "DataFrames", "MAT", "JSON", "Plots", "LaTeXStrings", "StatsPlots"])
+Pkg.add(["ProgressBars", "ProgressMeter", "BenchmarkTools", "FileIO", "JLD2", "NPZ", "CSV", "DataFrames", "MAT", "JSON", "Plots", "LaTeXStrings", "StatsPlots"])
 
 ########## STANDARD LIBRARY PACKAGES ##########
 

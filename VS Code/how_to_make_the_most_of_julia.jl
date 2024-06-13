@@ -3,7 +3,7 @@
 # as well as more advanced packages.
 
 using Pkg
-Pkg.add(["BenchMarkTools", "DataStructuresributed", "DataFrames", "CSV", "StatsBase", "Distributions", "HypothesisTests", "Plots", "PythonCall", "CondaPkg", "RCall"])
+Pkg.add(["BenchmarkTools", "DataStructures", "DataFrames", "CSV", "StatsBase", "Distributions", "HypothesisTests", "Plots", "PythonCall", "CondaPkg", "RCall"])
 
 ########## PARALLEL COMPUTING ##########
 
