@@ -2,6 +2,9 @@
 # Here, we will explore ways to make Julia run even faster
 # as well as more advanced packages.
 
+using Pkg
+Pkg.add(["BenchMarkTools", "DataStructuresributed", "DataFrames", "CSV", "StatsBase", "Distributions", "HypothesisTests", "Plots", "PythonCall", "CondaPkg", "RCall"])
+
 ########## PARALLEL COMPUTING ##########
 
 ##### Threads.jl ##### (https://docs.julialang.org/en/v1/manual/multi-threading/)
@@ -9,6 +12,9 @@
 
 # You can find out how many threads you have active by:
 # If this number is 1, restart Julia by typing "julia -t auto"
+# If you are in VS Code, right click on the Julia extension,
+# go to extension settings and edit settings.json in
+# Additional args. Then change julia.NumThreads to 8 and restart
 
 Threads.nthreads()
 
@@ -41,14 +47,15 @@ end
 @btime non_parallel_loop(1000);
 @btime parallel_loop(1000);
 
-# In some cases, multithreading actually slows things down!
+# If each process is very cheap, multithreading actually slows things down!
 @btime non_parallel_loop(1);
 @btime parallel_loop(1);
 
 # You must be careful that your code is free of a data race.
 # A data race occurs when two or more threads in a single process access 
-# the same memory location concurrently, and at least one of the accesses is for writing, 
-# and the threads are not using any exclusive locks to control their accesses to that memory
+# the same memory location concurrently, and at least one of the accesses 
+# is for writing, and the threads are not using any exclusive locks to 
+# control their accesses to that memory
 # Below is an example of where there is a data race.
 
 function sum_multi_bad()
@@ -65,9 +72,9 @@ sum_multi_bad()
 
 ### EXERCISE 1
 
-# Provided is an array of 20 matrices of 500x500 size. Your job is to compute the trace ('tr') of
-# the pseudoinverse ('pinv') of each matrix, and store it in a sepate array. Do all of this using
-# multithreading
+# Provided is an array of 20 matrices of 500x500 size. Your job is to 
+# compute the trace ('tr') of the pseudoinverse ('pinv') of each matrix, 
+# and store it in a sepate array. Do all of this using multithreading
 
 matrices = [randn(500, 500) for _ in 1:20];
 
@@ -83,15 +90,19 @@ CORRECT_ANSWER = tr.(pinv.(matrices)) # might take a few seconds to run
 
 using Distributed, SharedArrays
 
-# Multithreading uses a shared memory and is best run on multiple cores of the same CPU
-# Distributed.jl allows you to create processes that work with separate memory (or on separate computers)
-# @distributed provides the same functionality as Threads.@threads, but a shared data structure must be used.
+# Multithreading uses a shared memory and is best run on multiple cores 
+# of the same CPU
+# Distributed.jl allows you to create processes that work with 
+# separate memory (or on separate computers)
+# @distributed provides the same functionality as Threads.@threads, 
+# but a shared data structure must be used.
 # You can customize this by using Channels, but I won't get into that.
 # The standard library package SharedArrays.jl provides this functionality for arrays.
 # THe line below creates workers:
 
 addprocs(9 - nprocs())
 
+# This line makes sure SharedArrays is available on all workers
 @everywhere using SharedArrays
 
 function distributed_loop(N)
@@ -119,11 +130,12 @@ nprocs()
 using Pkg; Pkg.add("DataStructures");
 using DataStructures 
 
-# This package allows us to use more interesting data structuers than the ones vanilla Julia
-# provides us.
-# In my opinion, the most useful data structure from this package is the DefaultDict
-# This works just like a dictionary, but has a default value for each key.
-# This can be useful if you want to increment/add onto arrays in dictionaries
+# This package allows us to use more interesting data structuers than 
+# the ones vanilla Julia provides us with.
+# In my opinion, the most useful data structure from this package is the 
+# DefaultDict. This works just like a dictionary, but has a default value 
+# for each key. This can be useful if you want to increment/add onto arrays 
+# in dictionaries
 # The default value goes into the parentheses after the definition
 
 dict = DefaultDict{String, Vector{Float64}}([]);
@@ -135,9 +147,9 @@ for subj in subjs
 end
 display(dict) # Display is an alternative to println. It sometimes displays things better
 
-# The other useful data structure is a PriorityQueue. In this structure, the elements
-# in your dict will be ordered based on their value.
-# 'dequeue!' will take out the top key from the queue
+# The other useful data structure is a PriorityQueue. 
+# In this structure, the elements in your dict will be ordered based on 
+# their value. 'dequeue!' will take out the top key from the queue
 
 pq = PriorityQueue{String, Int}()
 for subj in subjs
@@ -153,8 +165,10 @@ end
 display(pq)
 dequeue!(pq)
 
-# In a Deque (double ended queue), you can efficiently push/pop items from the front or back.
-# In Julia, Arrays have the same capability, so there's little reason to use 'Deque'
+# In a Deque (double ended queue), you can efficiently push/pop items 
+# from the front or back.
+# In Julia, Arrays have the same capability, so there's little reason 
+# to use 'Deque'
 
 d = Deque{Int}();
 push!(d, 1)
@@ -165,7 +179,8 @@ popfirst!(d)
 # A 'Stack' provides last-in-first-out (LIFO) access
 # 'push!' and 'pop!' are used to do this.
 # A 'Queue' provides first-in-first-out (FIFO) access
-# 'enqueue!' and 'dequeue!' are used to do this, but again I don't see any real benefit over the standard Arrays
+# 'enqueue!' and 'dequeue!' are used to do this, 
+# but again I don't see any real benefit over the standard Arrays
 
 s = Stack{Int}();
 push!(s, 1);
@@ -184,7 +199,8 @@ dequeue!(q)
 Pkg.add(["DataFrames", "CSV"]);
 using DataFrames, CSV
 
-# This package is most similar to pandas in Python. Here is a comparison of the functions: https://dataframes.juliadata.org/stable/man/comparisons/
+# This package is most similar to pandas in Python. 
+# Here is a comparison of the functions: https://dataframes.juliadata.org/stable/man/comparisons/
 # As we've seen in the previous section, it's easy to load CSVs into DataFrames
 
 df = CSV.read("data/laptops.csv", DataFrame)
@@ -202,8 +218,8 @@ propertynames(df)
 
 size(df)
 
-# We can select columns in multiple ways. These will not produce a copy,
-# and altering them alters the original dataframe
+# We can select columns in multiple ways. These will not produce 
+# a copy, and altering them alters the original dataframe
 
 df.Price
 df[!, "Price"]
@@ -234,8 +250,9 @@ scren_size_group[1].Screen_Size
 scren_size_group[2].Screen_Size
 scren_size_group[3].Screen_Size
 
-# The functions dropmissing and dropmissing! can be used to remove the rows containing missing values 
-# from a data frame and either create a new DataFrame or mutate the original in-place respectively.
+# The functions dropmissing and dropmissing! can be used to remove 
+# the rows containing missing values from a data frame and either 
+# create a new DataFrame or mutate the original in-place respectively.
 
 size(df)
 size(dropmissing(df))
@@ -247,7 +264,7 @@ size(dropmissing(df))
 Pkg.add("StatsBase");
 using StatsBase
 
-# Think of StatsBase as an extension to Statistics, that adds a bit more detail
+# Think of StatsBase as an extension to Statistics that adds a bit more detail
 # We get can more fancy properties of data like the standard error of the mean, 
 # inter-quantile range, mode, higher order moments like skew and kurtosis
 
@@ -271,7 +288,8 @@ describe(x)
 
 zscore(x)
 
-# Given a collection of probabilities, you can calculate the entropy, cross-entropy and KL divergence with:
+# Given a collection of probabilities, you can calculate 
+# the entropy, cross-entropy and KL divergence with:
 
 p = [0.1, 0.4, 0.2, 0.3];
 q = [0.2, 0.3, 0.2, 0.3];
@@ -286,20 +304,23 @@ x = randn(100);
 y = 3 .+ randn(100);
 rmsd(x, y)
 
-# 'countmap' (and 'proportionmap') return a dictionary of how often each element of a collection is present
+# 'countmap' (and 'proportionmap') return a dictionary of how 
+# often each element of a collection is present
 
 x = rand(1:5, 1000);
 countmap(x)
 proportionmap(x)
 
-# 'ordinalrank' (no ties) 'competerank' and 'denserank' allow ranking of elements in an array
+# 'ordinalrank' (no ties) 'competerank' and 'denserank' 
+# allow ranking of elements in an array
 
 x = [3, 1, 1, 2];
 ordinalrank(x)
 competerank(x)
 denserank(x)
 
-# 'wsample' lets you sample from an array given some probabilities (replace can be used to set sampling with/without replacement)
+# 'wsample' lets you sample from an array given some probabilities
+# (replace can be used to set sampling with/without replacement)
 
 wsample(["A", "B", "C"], [0.9, 0.05, 0.05], 10)
 wsample(["A", "B", "C"], [0.9, 0.05, 0.05], 2, replace=false)
@@ -309,9 +330,12 @@ wsample(["A", "B", "C"], [0.9, 0.05, 0.05], 2, replace=false)
 Pkg.add(["Distributions", "Plots"]);
 using Distributions, Plots
 
-# This package lets us sample from, get the pdf/cdf and other properties of many statistical distribitions.
-# The list of available distributions in in their documentation. I will not list it since there are >100
-# The syntax is as follows: first, define a distribution object, and then call functions around it.
+# This package lets us sample from, get the pdf/cdf and other 
+# properties of many statistical distribitions.
+# The list of available distributions in in their documentation. 
+# I will not list it since there are >100
+# The syntax is as follows: first, define a distribution object, 
+# and then call functions around it.
 
 d = Normal()
 mean(d)
@@ -326,8 +350,9 @@ rand(d, 10)
 fieldnames(Normal)
 d = Normal(1, 2)
 
-# If we want to get the pdf/cdf (e.g. for plotting), we need to give the function
-# a range of x values to evaluate the pdf/cdf on
+# If we want to get the pdf/cdf (e.g. for plotting), 
+# we need to give the function a range of x values to evaluate 
+# the pdf/cdf on
 
 x = -4:0.01:4;
 plot(x, pdf.(d, x))
@@ -354,9 +379,12 @@ plot!(x, pdf.(d, x), linewidth=3, label="fit")
 Pkg.add("HypothesisTests");
 using HypothesisTests
 
-# This package lets us do all sorts of hypothesis tests like t-test, ANOVA, Mann-Whitney, etc
-# The documentation is amazing and can help you decide which test is best for your use case.
-# The example below is for a two sample t-test. You can obtain the p-value using the 'pvalue' function
+# This package lets us do all sorts of hypothesis tests like t-test, 
+# ANOVA, Mann-Whitney, etc
+# The documentation is amazing and can help you decide which test 
+# is best for your use case.
+# The example below is for a two sample t-test. 
+# You can obtain the p-value using the 'pvalue' function
 
 x = randn(50);
 y = randn(50) .+ 2;
@@ -366,7 +394,8 @@ dump(test)
 
 ### EXERCISE 2
 
-# Identify for which subjects the mean of the data from experiment1 and experiment2
+# Identify for which subjects the mean of the data from 
+# experiment1 and experiment2
 # is statistically significantly different (assume unequal variance)
 
 df = CSV.read("data/data_.csv", DataFrame)
@@ -382,7 +411,8 @@ df = CSV.read("data/data_.csv", DataFrame)
 Pkg.add(["PythonCall", "CondaPkg"]);
 using PythonCall, CondaPkg
 
-# You can use 'pyimport' to import python packages/your own Python functions
+# You can use 'pyimport' to import python packages/your own 
+# Python functions
 # CondaPkg.jl is used to install python packages (https://github.com/JuliaPy/CondaPkg.jl)
 
 CondaPkg.add("matplotlib")
@@ -412,7 +442,8 @@ Pkg.add("RCall");
 Pkg.build("RCall");
 using RCall
 
-# Run 'using RCall' in the terminal and press '$' to enter R command line interface
+# Run 'using RCall' in the terminal and press '$' 
+# to enter R command line interface
 # Otherwise, place R before the string of R code
 
 b = [1, 2, 3];

@@ -2,6 +2,9 @@
 # Here, we will delve into essential packages you need to get started
 # with using Julia for your own projects.
 
+using Pkg
+Pkg.add(["ProgressBars", "ProgressMeter", "BenchMarkTools", "FileIO", "JLD2", "NPZ", "CSV", "DataFrames", "MAT", "JSON", "Plots", "LaTeXStrings", "StatsPlots"])
+
 ########## STANDARD LIBRARY PACKAGES ##########
 
 ##### Random.jl ##### (https://docs.julialang.org/en/v1/stdlib/Random/)
@@ -20,7 +23,7 @@ rand(3, 3)
 
 # It can also be used to generate random numbers from a specified collection
 
-rand(1:3, 5) # 5 random numbers from [1, 2, 3]
+rand(1:3, 6) # 5 random numbers from [1, 2, 3]
 
 # 'bitrand' is used to generate an array of 1s and 0s 
 
@@ -45,8 +48,8 @@ randexp(5)
 randstring(10)
 randstring('a':'z', 10)
 
-# 'ransubseq' generates a random subsequence of a given array with a probability p
-# This essentially subsamples your array
+# 'ransubseq' generates a random subsequence of a given array with a 
+# probability p. This essentially subsamples your array
 
 p = 0.5 #(include each element with 50% probability)
 randsubseq(1:5, p)
@@ -64,12 +67,14 @@ a[b] #(shuffled array)
 a = ["first", "second", "third", "fourth", "fifth"]
 shuffle(a)
 shuffle!(a)
+a
 
 ##### Dates.jl ##### (https://docs.julialang.org/en/v1/stdlib/Dates/)
 
 using Dates
 
-# This package allows us to format dates/times. I find it most useful to measure time
+# This package allows us to format dates/times. 
+# I find it most useful to measure time
 
 first_time = now()
 
@@ -81,8 +86,8 @@ now() - first_time
 
 using Logging
 
-# This package is a better way to debug your code than just using 'println' statements.
-# @info, @warn, @error are all ways to display custom messages.
+# This package is a better way to debug your code than just using 'println' 
+# statements. @info, @warn, @error are all ways to display custom messages.
 
 A = rand(3, 3);
 @info "The sum of elements in the matrix is" A sum(A)
@@ -98,7 +103,8 @@ A[10, 10] = 1000000;
 using Statistics
 
 # This package provides basic stats tools
-# The functions below compute the mean, media, standard deviation, and variance of a collection of numbers.
+# The functions below compute the mean, media, standard deviation, 
+# and variance of a collection of numbers.
 
 a = randn(100);
 mean(a)
@@ -126,7 +132,8 @@ quantile(a, [0.025, 0.975])
 using LinearAlgebra
 
 # This package provides useful linear algebra operators
-# 'tr', 'det' and 'inv' implement the trace, determinant, and inverse of a matrix
+# 'tr', 'det' and 'inv' implement the trace, determinant, 
+# and inverse of a matrix
 
 A = rand(1:3, 3, 3)
 tr(A)
@@ -190,7 +197,8 @@ diagm(a)
 diag(A)
 
 
-# The variable 'I' is usually reserved for the identity matrix, which in Julia is called 'UniformScaling'
+# The variable 'I' is usually reserved for the identity matrix, 
+# which in Julia is called 'UniformScaling'
 
 I
 I*A == A*I == A
@@ -235,7 +243,8 @@ nullspace(B)
 
 ##### ProgressBars.jl ##### (https://github.com/cloud-oak/ProgressBars.jl)
 # If this gives you an error, make sure to install the package first!
-# Go into package mode by typing ']' into the terminal, and then run 'add ProgressBars'
+# Go into package mode by typing ']' into the terminal, and then run 
+# 'add ProgressBars'
 # Backspace to go out of package mode, alternatively run the line below
 
 using Pkg; Pkg.add("ProgressBars");
@@ -281,9 +290,11 @@ end
 
 ### EXERCISE 1
 
-# Write a piece of code that generates a random 100x100 matrix (using 'randn'), takes the pseudo-inverse of this matrix, 
+# Write a piece of code that generates a random 100x100 matrix 
+# (using 'randn'), takes the pseudo-inverse of this matrix, 
 # and concatenates 100 of these together into a single 10,000 x 100 matrix.
-# Incorporate ProgressBar/ProgressMeter to indicate your progress across the 100 matrices.
+# Incorporate ProgressBar/ProgressMeter to indicate your 
+# progress across the 100 matrices.
 
 ##### TODO: CODE BELOW
 
@@ -295,8 +306,10 @@ Pkg.add("BenchmarkTools");
 using BenchmarkTools
 
 # This package lets you find out how fast your functions run.
-# use the '@btime' macro before your function, and the time taken, as well as memory allocations will be displayed
-# @btime will run your function many times to get a good estimate, so it will take a while depending on your function
+# use the '@btime' macro before your function, and the time taken, 
+# as well as memory allocations will be displayed
+# @btime will run your function many times to get a good estimate, 
+# so it will take a while depending on your function
 
 """
     fib_memo(n)
@@ -325,8 +338,10 @@ fib_memo(1000) # These numbers get big
 
 @benchmark fib_memo(1000)
 
-# If you have more expensive functions, you can simply use @time or @elapsed if you want to store the value
-# These estimates are not as trust-worthy as the ones from @btime and @benchmark
+# If you have more expensive functions, you can simply use 
+# @time or @elapsed if you want to store the value
+# These estimates are not as trust-worthy as the ones from 
+# @btime and @benchmark
 
 @time fib_memo(1000);
 time_taken = @elapsed fib_memo(1000)
@@ -341,7 +356,8 @@ using FileIO
 # This package interfaces with a number of file formats (https://juliaio.github.io/FileIO.jl/stable/registry/)
 # Use 'save' and 'load' to read and write data
 
-# To save Julia variables, 'JLD2' is the gold standard, and works similar to Python's pickle (https://juliaio.github.io/JLD2.jl/dev/)
+# To save Julia variables, 'JLD2' is the gold standard, 
+# and works similar to Python's pickle (https://juliaio.github.io/JLD2.jl/dev/)
 
 Pkg.add("JLD2")
 using JLD2
@@ -350,24 +366,25 @@ data = Dict{String, Vector{Int}}("1A3CD" => [1, 4, 2, 4, 5], "2HD7E" => [6, 4, 3
 save("data/data.jld2", data)
 data2 = load("data/data.jld2")
 
-# If you want to load arrays saved from numpy in .npy format, use 'NPZ.jl'
+# If you want to load arrays saved from numpy in .npy format, 
+# use 'NPZ.jl'
 
 Pkg.add("NPZ")
 using NPZ
 
 a = rand(100);
 save("data/data.npy", a)
-b = load("data/data.npy")
+b = load("data/data.npy");
 a == b
 
-# For .csv files, it makes most sense to load them directly into DataFrames (we will cover these later)
+# For .csv files, it makes most sense to load them directly 
+# into DataFrames (we will cover these later)
 
 Pkg.add(["CSV", "DataFrames"]);
 using CSV, DataFrames
 
 CSV.write("data/data.csv", data)
 data2 = CSV.read("data/data.csv", DataFrame)
-data2 == data
 
 # To read/write .rda/.rdata files, use 'RData.jl'
     # CANT WRITE TO .rda FILES. ONLY USE THIS IF YOU HAVE SOME .rda FILE YOU WANT TO READ
@@ -402,8 +419,8 @@ using JSON
 
 json_string = JSON.json(data);
 
-# Now we can use the general file opening functionality that we have been avoiding
-# by using FileIO
+# Now we can use the general file opening functionality that we 
+# have been avoiding by using FileIO instead
 
 open("data/data.json","w") do f 
     write(f, json_string) 
@@ -427,7 +444,8 @@ using Plots
 
 ##### BASIC PLOTTING #####
 
-# Plots.jl does almost all of its work through keyword arguments on the base 'plot' function
+# Plots.jl does almost all of its work through keyword arguments 
+# on the base 'plot' function
 # To plot a single series of data, simply put the data into 'plot'
 # The first time you run this, it might take a while...
 
@@ -440,15 +458,21 @@ plot(y)
 
 plot(x, y, tick_direction=:out)
 
-# Specify the size of your plot with 'size' (by default in pt measure, width first then height)
-# I generally don't like the grid and the label for a single series. You can get rid of these using the 'label' and 'grid' keyword arguments
-# You can specify axis labels and titles using 'xlabel', 'ylabel' and 'title'
-# x and y ticks can be specified using the 'xticks' and 'yticks' arguments
+# Specify the size of your plot with 'size' 
+# (by default in pt measure, width first then height)
+# I generally don't like the grid and the label for a 
+# single series. You can get rid of these using the 'label' 
+# and 'grid' keyword arguments
+# You can specify axis labels and titles using 'xlabel', 
+# 'ylabel' and 'title'
+# x and y ticks can be specified using the 'xticks' and 
+# 'yticks' arguments
 
 plot(x, y, size=(200, 200), label="", grid=false, xlabel="X axis", ylabel="Y axis", title="Some plot", xticks=[0, 5, 10], yticks=[0, 5, 10])
 
 # As you can tell, this plot line is getting rather long.
-# This is nice since it is all contained in one command, but can get arduous to look at.
+# This is nice since it is all contained in one command, 
+# but can get arduous to look at.
 # If you prefer, you can split up the function like so:
 
 plot(x, y, 
@@ -458,8 +482,17 @@ plot(x, y,
     label="", grid=false)
 
 
-# If you want to change what is displayed on the xticks, but not where they're shown, use:
-# The limits for the axes can be specified with xlim and ylim:
+# If you want to change what is displayed on the xticks, 
+# but not where they're shown, use:
+
+plot(x, y, 
+    xticks=([0, 5, 10], ["a", "b", "c"]), 
+    yticks=([0, 5, 10], ["a", "b", "c"]), 
+    size=(200, 200), 
+    xlabel="X axis", ylabel="Y axis", title="Some plot", 
+    label="", grid=false)
+
+# The limits for the axes can be specified with xlim and ylim
 # 'linewidth' sets the width of the line
 # You can choose to flip the x or y axes with 'xflip' and 'yflip':
 # You can also change the scale from linear to logarithmic
@@ -475,8 +508,10 @@ plot(x .+ 1, y .+ 2, # make non negative for log
     label="", grid=false)
 
 
-# Alternatively, you can choose whether to display the axes on the other side of the figure with 'xmirror' and 'ymirror'
-# You can also rotate the ticks (in degrees) with 'xrotation' and 'yrotation'
+# Alternatively, you can choose whether to display the axes 
+# on the other side of the figure with 'xmirror' and 'ymirror'
+# You can also rotate the ticks (in degrees) with 'xrotation' 
+# and 'yrotation'
 
 plot(x, y, 
     xrotation=-20, yrotation=50,
@@ -490,8 +525,9 @@ plot(x, y,
     label="", grid=false)
 
 
-# Sometimes, there will be unwanted whitespace below/above/left/right of your plots.
-# You can manage margins using:
+# Sometimes, there will be unwanted whitespace 
+# below/above/left/right of your plots.
+# You can manage margins using below/above/left/right_margin:
 # (The example below is purposefully bad)
 
 plot(x, y, 
@@ -524,13 +560,10 @@ plot(x, y, linestyle=:dot, linewidth=3)
 plot(x, y, linestyle=:dashdot, linewidth=3)
 plot(x, y, linestyle=:dashdotdot, linewidth=3)
 
-# You can also rotate the ticks (in degrees)
-
-plot(x, y, xrotation=-20, yrotation=50)
-
 # If you want to plot multiple series, you can either form a matrix
 # Or you can make two plot statements
-# For the latter, we use the '!' notation, which adds on top of the existing figure.
+# For the latter, we use the '!' notation, 
+# which adds on top of the existing figure.
 
 y1 = 1 .+ 2*x;
 y2 = 5 .- 3*x;
@@ -554,11 +587,12 @@ plot!(x, y3, label="third", legend_position=:bottomright)
 x2 = 0*x;
 plot!(x2, y1, label="fourth", legendcolumns=3)
 
-# If you want to use subplots instead of having everything on the same plot,
-# you can use layout to specify how many subplots there should be.
+# If you want to use subplots instead of having everything 
+# on the same plot, you can use layout to specify how many 
+# subplots there should be.
 # You then specify with 'sp' on which subplot things should go.
-# I usually write one 'plot' line to lay everything out, and then use a bunch of
-# 'plot!' to do everything on the subplots.
+# I usually write one 'plot' line to lay everything out, 
+# and then use a bunch of 'plot!' to do everything on the subplots.
 
 plot(layout=(2, 2), xticks=[], legend=false, grid=false)
 plot!(x, y1, sp=1)
@@ -608,6 +642,8 @@ plot(rand(10, 11), layout=l, legend=false, seriestype=[:bar :scatter :path])
 ##### ALTERNATE PLOTS #####
 
 # To make a scatter plot, you can use either:
+x = collect(0:0.1:10);
+y = x + randn(length(x));
 plot(x, y, seriestype=:scatter)
 scatter(x, y)
 
@@ -647,7 +683,8 @@ data = randn(100, 100);
 heatmap(1:100, 1:100, cov(data), colorbar_title="\nColorbar title", right_margin=15Plots.pt)
 
 # The colormap or theme can be set by choosing from https://docs.juliaplots.org/latest/generated/colorschemes/
-# I also often prefer to have (0, 0) at the top left, so I flip the y axis.
+# I also often prefer to have (0, 0) at the top left, 
+# so I flip the y axis.
 # The title of the colorbar can be set with 'colorbar_title'
 
 heatmap(1:100, 1:100, cov(data), cmap=:grays, yflip=true, xticks=[], yticks=[], colorbar_title="\nColorbar title", right_margin=15Plots.pt)
@@ -696,9 +733,11 @@ plot(x, y, xlabel="X label", ylabel="Y label", xguidefont=font("Helvetica", 22, 
 plot(x, y)
 annotate!(4, 6, "a note")
 
-# If you want to use LaTeX symbols as part of your plots, import LaTeXStrings (https://github.com/JuliaStrings/LaTeXStrings.jl)
-# Wrap your latex code into a string, and place it inside the 'latexstring' function
-# If you are using any symbols, make sure to use DOUBLE backslack \\
+# If you want to use LaTeX symbols as part of your plots, 
+# import LaTeXStrings (https://github.com/JuliaStrings/LaTeXStrings.jl)
+# Wrap your latex code into a string, and place it inside the 
+# 'latexstring' function
+# If you are using any symbols, make sure to use DOUBLE backslash \\
 
 Pkg.add("LaTeXStrings")
 using LaTeXStrings
@@ -711,8 +750,8 @@ plot(x, y, xlabel="\n"*latexstring("\\sqrt{\\frac{\\alpha}{\\beta}}"), ylabel=la
 # Use the 'savefig' function to do so. 
 # Make sure you set the dpi high (300) to get high quality plots. 
 # If you want to save your text as text rather than shapes for .svg
-# so you can edit in illustrator, make sure you set the fontfamily of all your
-# fonts to 'Helvetica'
+# so you can edit in illustrator, make sure you set the fontfamily
+# of all your fonts to 'Helvetica'
 
 plot(1:10, exp.(1:10), dpi=300, label="", grid=false, yscale=:log)
 savefig("data/example_plot.png")
@@ -730,8 +769,9 @@ x = randn(1000);
 y = randn(1000);
 marginalhist(x, y, nbins=20, cmap=:Blues)
 
-# Similarly, we can also plot the contours using kernel density estimates
-# (levels sets how many contour levels to plot, code can take a second to run)
+# Similarly, we can also plot the contours using kernel density 
+# estimates (levels sets how many contour levels to plot, 
+# code can take a second to run)
 
 marginalkde(x, y, levels=10, cmap=:Blues)
 
@@ -748,9 +788,9 @@ cornerplot(data, size=(500, 500), normalize=:probability)
 # You can see these in the Andrews plot, as well as their variability
 
 data = randn(500, 4);
-data[1:100, :] .= hcat([[1, 2, 3, 4] .+ 0.1*randn(4) for _ in 1:100]...)'
-data[101:400, :] .= hcat([[7, 6, 5, 4] .+ randn(4) for _ in 1:300]...)'
-data[401:end, :] .= hcat([[10, 10, 0, 10] .+ 0.5*randn(4) for _ in 1:100]...)'
+data[1:100, :] .= hcat([[1, 2, 3, 4] .+ 0.1*randn(4) for _ in 1:100]...)';
+data[101:400, :] .= hcat([[7, 6, 5, 4] .+ randn(4) for _ in 1:300]...)';
+data[401:end, :] .= hcat([[10, 10, 0, 10] .+ 0.5*randn(4) for _ in 1:100]...)';
 andrewsplot(data, alpha=0.1, label="", grid=false)
 
 # qqplot is a good way to check if data is Normally distributed
@@ -786,8 +826,10 @@ dotplot!(subjects, data, alpha=0.5)
 
 ##### ANIMATIONS #####
 
-# We can make animations very easily by using the '@animate' macro around a for loop that makes a plot every frame:
-# 'gif' then turns the animation into a '.gif' and sets the frames-per-second ('fps')
+# We can make animations very easily by using the '@animate' 
+# macro around a for loop that makes a plot every frame:
+# 'gif' then turns the animation into a '.gif' and sets the 
+# frames-per-second ('fps')
 
 n = 100;
 
@@ -884,6 +926,7 @@ gif(anim, fps=50)
 # BONUS: make the rightmost point a large red star on each frame
 
 # Data for plotting is below:
+Random.seed!(0);
 data = cumsum(randn(120));
 
 ##### TODO: CODE BELOW
