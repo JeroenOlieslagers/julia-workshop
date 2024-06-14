@@ -37,6 +37,7 @@ dict = Dict{String, Vector{Int}}()
 for (k, v) in data
     dict[k] = vcat(v, v)
 end
+dict
 
 ##### TODO: CODE ABOVE
 
@@ -52,6 +53,9 @@ function square!(x::Vector{Int64})::Nothing
     x .^= 2
     return nothing
 end
+a = [1, 2, 3]
+square!(a)
+a
 
 ##### TODO: CODE ABOVE
 
@@ -118,6 +122,7 @@ plot!(x, y4, c=:red, linewidth=1, label="quartic")
 # BONUS: make the rightmost point a large red star on each frame
 
 # Data for plotting is below:
+Random.seed!(0);
 data = cumsum(randn(120));
 
 ##### TODO: CODE BELOW
@@ -140,6 +145,8 @@ matrices = [randn(500, 500) for _ in 1:20];
 
 ##### TODO: CODE BELOW
 
+using ProgressBars, LinearAlgebra
+
 result = zeros(20);
 Threads.@threads for i in ProgressBar(eachindex(matrices))
     result[i] = tr(pinv(matrices[i]))
@@ -159,7 +166,7 @@ CORRECT_ANSWER == result
 # is statistically significantly different (assume unequal variance)
 
 using DataFrames, HypothesisTests, CSV
-df = CSV.read("data_.csv", DataFrame)
+df = CSV.read("data/data_.csv", DataFrame)
 
 ##### TODO: CODE BELOW
 
