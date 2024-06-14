@@ -14,7 +14,7 @@
 
 If you are using VS Code, open the files in the VS Code folder.
 
-If you are using Jupyter Notebook, type `julia` and press [ENTER]. Then, type `]` and then `add IJulia` and [ENTER]. After this, you can open the files in the Jupyter Notebook folder.
+If you are using Jupyter Notebook, type `julia` and press [ENTER]. Then, type `]` and then `add IJulia` and [ENTER]. After this, type `build IJulia` and [ENTER]. Finally, you can open the files in the Jupyter Notebook folder.
 
 If you are using Google Colab, use the following links (you will have to copy the file to your own Google Drive, and run in Google Colab):
 
